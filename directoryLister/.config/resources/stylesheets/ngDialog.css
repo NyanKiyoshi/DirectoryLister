@@ -1,0 +1,19 @@
+.ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-primary {
+    webkit-transition: 035s;
+    -moz-transition: 0.3s;
+    -ms-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-primary:hover {
+    background: #2e77d0;
+}
+
+.ngdialog.ngdialog-theme-default .ngdialog-button.ngdialog-button-primary:focus {
+    background: #296bba;
+}
+
+.ngdialog-message .ngdialog-buttons {
+    padding: 0 15px;
+}

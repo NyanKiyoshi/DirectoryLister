@@ -1,0 +1,15 @@
+{
+    "base_directory": null,
+    "body": "./template.html",
+    "css": "./stylesheet.css",
+    "js": "./javascript.js",
+    "default_locale": "en",
+    "date_format": "%Y-%m-%d %H:%M:%S",
+    "binary_prefix": false,
+    "allow_access_to_hidden": false,
+    "hidden_files": [".config/"],
+    "hide_parent": true,
+    "must_hash_files": true,
+    "resources_directory": "./resources",
+    "keep_hashes_cache": true
+}

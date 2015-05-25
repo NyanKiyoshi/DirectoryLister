@@ -1,0 +1,111 @@
+<!doctype html>
+<html ng-app="Dialog">
+<head>
+    <meta charset="UTF-8" />
+    <title>$CURRENT_DIRECTORY</title>
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,400italic' rel='stylesheet' type='text/css'>
+    $CSS
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog-theme-default.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog-theme-plain.min.css">
+    <link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/css/ngDialog.min.css">
+    <link rel="stylesheet" type="text/css" href="/?get=stylesheets%2FngDialog.css">
+</head>
+
+<body ng-controller="MainCtrl">
+    <div id="wrapper">
+        <div id="content" class="container">
+            {{ if error }}
+                <div class="error">
+                    <p>$ERROR_MESSAGE. Return <a href="/">Home</a>?</p>
+                </div>
+            {{ endif }}
+            {{ if no error }}
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="4" class="th-title">
+                                <h2>$CURRENT_DIRECTORY</h2>
+                            </th>
+                        </tr>
+                        <tr class="legend-bottom-sep">
+                            <td colspan="4">
+                                <hr />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class=""><a href="$TOGGLE_SORTING_NAME">File</a></th>
+                            <th><a href="$TOGGLE_SORTING_SIZE">Size</a></th>
+                            <th class="nowrap"><a href="$TOGGLE_SORTING_MODIFICATION">Date Modified</a></th>
+                        </tr>
+                        <tr class="legend-bottom-sep">
+                            <td colspan="4">
+                                <hr />
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="full-width" colspan="4"><a href="../$END_URL"><i class="fa fa-level-up fa-fw"></i>..</a></td>
+                        </tr>
+                        {{ loop }}
+                            <tr>
+                                <td class="full-width"><a href="$FILE_LINK"><i class="fa $FILE_TYPE fa-fw"></i> $FILE_NAME</a></td>
+                                <td>$FILE_SIZE</td>
+                                <td class="nowrap">$FILE_MODIFICATION</td>
+                                {{ if file }}
+                                    <td class="nowrap">
+                                        <a class="more" ng-click="openDefault('$FILE_LINK', '$FILE_NAME')" href="javascript:void(0)">
+                                            <i class="fa fa-info-circle"></i>
+                                        </a>
+                                    </td>
+                                {{ endif file }}
+                                {{ if not file }}
+                                    <td></td>
+                                {{ endif not file }}
+                            </tr>
+                        {{ endloop }}
+                        <tr class="hidden-row">
+                            <td class="full-width"></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            {{ endif }}
+        </div>
+
+        <div id="footer">
+            <p>
+                By using this service, you accept to use the cookies.
+                If you don't want them, just put the query string "<a href="?no-cookies">no-cookies</a>" at the end of the URL.
+                While you have this query string, no more cookies will be used/ set.
+            </p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
+    $JS
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-dialog/0.4.0/js/ngDialog.min.js"></script>
+    <script type="text/ng-template" id="getHashes">
+        <div class="ngdialog-message">
+            <h2>Hashes for <span id="filename">"{{ file_name || '[?]' }}"</span>:</h2>
+            <div class="hashes-list">
+                <label for="md5">MD5 hash:</label>
+                <input class="clearfix" type="text" readonly value="Loading..." id="md5" select-on-click>
+                <label for="sha1">SHA1 hash:</label>
+                <input class="clearfix" type="text" readonly value="Loading..." id="sha1" select-on-click>
+            </div>
+        </div>
+        <div class="ngdialog-message">
+            <div class="ngdialog-buttons">
+                <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="closeThisDialog()">Close</button>
+            </div>
+        </div>
+    </script>
+
+<script type="text/javascript">
+
+</script>
+</body>
+</html>
