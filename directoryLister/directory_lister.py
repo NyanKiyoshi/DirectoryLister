@@ -348,7 +348,7 @@ class ListDirectory(object):
 
         self.css_invalid_chars = re.compile('[^_a-zA-Z\-]+[^_a-zA-Z0-9-]*')
 
-        self.working_path = path
+        self.working_path = [path + '/', path][path.endswith('/')]
         self.body = body
         self.date_format = date_format
         self.binary_prefix = binary_prefix
@@ -704,7 +704,7 @@ class ListDirectory(object):
         # We separate directories and files to always keep directories on top
         directory_content = {'dirs': [], 'files': []}
         for file_name in dir_:
-            is_dir = os.path.isdir(file_name)
+            is_dir = os.path.isdir(self.working_path + file_name)
             # If is a directory we add a "/" at the end of the filename before check if hidden
             #   (to separate dirs of the files/ links).
             if self.is_hidden(file_name + '/' if is_dir else ''):

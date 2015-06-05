@@ -40,6 +40,8 @@ e.g.: py setup.py develop --install-dir ~/.local/lib/python2.7/site-packages/.
 ### 4. Configuration:
 If you do not have to read all, you have an example into the directory `directory-lister/.config/`.
 
+You can also run the [`run_example.sh`](run_example.sh)!
+
      usage: directory_lister.py [-h] [-c PATH] [-d DIRECTORY] [-p PORT]
                                 [--body BODY] [--style CSS] [--js JS]
                                 [--date FORMAT] [--binary] [--hashing]
