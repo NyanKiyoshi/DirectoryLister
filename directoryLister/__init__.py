@@ -1,7 +1,7 @@
 try:
     import pkg_resources
     with open(pkg_resources.resource_filename(__name__, 'VERSION')) as vf:
-        __version__ = vf.read()
+        __version__ = vf.read().strip(' \n')
 except ImportError:
     pass
 

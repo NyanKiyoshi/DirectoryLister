@@ -458,7 +458,7 @@ class ListDirectory(object):
                     except IOError:
                         f.close()
 
-        path = self.working_path + environ['PATH_INFO']
+        path = self.working_path + environ['PATH_INFO'][1:]
         response.add_headers({'Content-Type': 'text/html; charset=UTF-8'})
         template = dict(
             CURRENT_DIRECTORY=environ['PATH_INFO'],
@@ -626,8 +626,7 @@ class ListDirectory(object):
         del stats
 
         if self.keep_hashes_cache:
-            r = self.cursor.execute(
-                "SELECT hashes FROM files WHERE path=? AND st_mtime=?", (path, st_mtime)).fetchone()
+            r = self.cursor.execute("SELECT hashes FROM files WHERE path=? AND st_mtime=?", (path, st_mtime)).fetchone()
             # we already hashed it! Then we just return the old results
             if r:
                 return r[0]
@@ -635,8 +634,10 @@ class ListDirectory(object):
         b_lines = opened_file.readlines()
         hashes = dict(md5=self.get_hash(b_lines, md5), sha1=self.get_hash(b_lines, sha1))
         if self.keep_hashes_cache:
+            # We insert the hashes or we update them if the path already exists (if the modification time has changed)
             self.cursor.execute(
-                "INSERT INTO files (path, st_mtime, hashes) VALUES (?, ?, ?)", (path, st_mtime, json.dumps(hashes)))
+                "INSERT or REPLACE INTO files(path, st_mtime, hashes) VALUES"
+                "(?, ?, ?)", (path, st_mtime, json.dumps(hashes)))
         return json.dumps(hashes)
 
     @staticmethod
@@ -699,12 +700,13 @@ class ListDirectory(object):
         except OSError:
             return self.rendering_error(ERROR_MESSAGE='Invalid file or directory.')
 
+        path = [path + '/', path][path.endswith('/')]
         sorting = sorting.lower().split('.', 2)
 
         # We separate directories and files to always keep directories on top
         directory_content = {'dirs': [], 'files': []}
         for file_name in dir_:
-            is_dir = os.path.isdir(self.working_path + file_name)
+            is_dir = os.path.isdir(path + file_name)
             # If is a directory we add a "/" at the end of the filename before check if hidden
             #   (to separate dirs of the files/ links).
             if self.is_hidden(file_name + '/' if is_dir else ''):
