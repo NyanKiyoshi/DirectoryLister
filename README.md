@@ -112,9 +112,13 @@ Arguments `command-line-argument` (`Configuration_file_equivalent`):
   
     A path to a new sqlite database (in memory by default).
 
-  - `--single-thread` (`singlethread` as boolean)
+  - `--single-thread` (`single_thread` as boolean)
 
     If we should only use a single thread server or not and then process to requests one after one.
+
+  - `--thread-count` (`thread_count` as boolean)
+
+    If the single thread support is activated, it will allow to set a limit of threads.
 
   - `--hide-parent` (`hide_parent` as boolean)
 

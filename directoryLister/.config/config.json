@@ -2,6 +2,7 @@
     "base_directory": null,
     "body": "./template.html",
     "css": "./stylesheet.css",
+    "thread_count": 10,
     "js": "./javascript.js",
     "default_locale": "en",
     "date_format": "%Y-%m-%d %H:%M:%S",

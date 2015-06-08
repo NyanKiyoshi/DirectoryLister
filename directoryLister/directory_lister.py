@@ -746,12 +746,12 @@ class ListDirectory(object):
         )
 
 
-def main(host='0.0.0.0', port=8000, singlethread=False, **kwargs):
+def main(host='0.0.0.0', port=8000, single_thread=False, thread_count=10, **kwargs):
     # if the configuration file have an invalid item -> exception (we don't check)
-    if singlethread:
+    if single_thread:
         s = make_server(host=host, port=port, app=ListDirectory(**kwargs))
     else:
-        s = make_multithread_server(thread_count=2, host=host, port=port, app=ListDirectory(**kwargs))
+        s = make_multithread_server(thread_count=thread_count, host=host, port=port, app=ListDirectory(**kwargs))
 
     try:
         print('Starting the server at http://%s:%d' % (host, port))
@@ -811,9 +811,12 @@ if __name__ == '__main__':
     parser.add_argument('--database', metavar='PATH', dest='database', default=':memory:',
                         help='A path to a new sqlite database (in memory by default).')
     # --single-thread
-    parser.add_argument('--single-thread', dest='singlethread', action='store_true', default=False,
+    parser.add_argument('--single-thread', dest='single_thread', action='store_true', default=False,
                         help='If we should only use a single thread server or not and then process to requests '
                              'one after one.')
+    # --thread-count
+    parser.add_argument('--thread-count', dest='thread_count', default=10, type=int,
+                        help='Sets the limit of threads.')
     # --hide-parent
     parser.add_argument('--hide-parent', dest='hide_parent', action='store_true', default=False,
                         help='Must hide the parent double dots (..) or not.')
