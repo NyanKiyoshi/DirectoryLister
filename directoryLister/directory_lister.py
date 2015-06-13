@@ -32,6 +32,13 @@
 # from https://github.com/RonRothman/mtwsgi/blob/master/mtwsgi.py
 
 
+from sys import version_info
+
+if version_info <= (2, 6) or version_info.major > 2:
+    class VersionError(BaseException):
+        pass
+    raise VersionError('this script requires a Python2 version greater or equal than 2.7.')
+
 import sqlite3
 import socket
 import re
@@ -746,22 +753,7 @@ class ListDirectory(object):
         )
 
 
-def main(host='0.0.0.0', port=8000, single_thread=False, thread_count=10, **kwargs):
-    # if the configuration file have an invalid item -> exception (we don't check)
-    if single_thread:
-        s = make_server(host=host, port=port, app=ListDirectory(**kwargs))
-    else:
-        s = make_multithread_server(thread_count=thread_count, host=host, port=port, app=ListDirectory(**kwargs))
-
-    try:
-        print('Starting the server at http://%s:%d' % (host, port))
-        s.serve_forever()
-    except KeyboardInterrupt:
-        print('Closing the server...')
-        s.server_close()
-
-
-if __name__ == '__main__':
+def parse_arguments():
     parser = ArgumentParser(prog='directoryLister')
 
     # --config=PATH
@@ -858,4 +850,23 @@ if __name__ == '__main__':
     # verifying the port range
     if not 1 <= args_.port <= 25555:
         raise AssertionError('Port must be between 1 and 25555 (%s).' % args_.port)
-    main(**args_.__dict__)
+    return args_
+
+
+def main(host='0.0.0.0', port=8000, single_thread=False, thread_count=10, **kwargs):
+    # if the configuration file have an invalid item -> exception (we don't check)
+    if single_thread:
+        s = make_server(host=host, port=port, app=ListDirectory(**kwargs))
+    else:
+        s = make_multithread_server(thread_count=thread_count, host=host, port=port, app=ListDirectory(**kwargs))
+
+    try:
+        print('Starting the server at http://%s:%d' % (host, port))
+        s.serve_forever()
+    except KeyboardInterrupt:
+        print('Closing the server...')
+        s.server_close()
+
+
+if __name__ == '__main__':
+    main(**parse_arguments().__dict__)
