@@ -170,7 +170,7 @@ There is the list of the available tokens for the HTML template (case sensitive)
          
           ```
               {{ if not file }}
-                  If this is not a file (a dir) I want to show that...
+                  If this is not a file (a directory, then) I want to show that...
               {{ endif not file }}
           ```
 
@@ -184,7 +184,7 @@ There is the list of the available tokens for the HTML template (case sensitive)
              {{ endif }}
          ```
 
-         If there is an error (invalid or empty directory), we ignore the content into the bloc `## else:` until the `## endif` token. Also, we can show the error by using the %(ERROR_MESSAGE)s token.
+         If there is an error (invalid or empty directory), we ignore the content into the bloc `## else:` until the `## endif` token. Also, we can show the error by using the $ERROR_MESSAGE token.
          Else, if there is not error, then we follow the instructions and we ignore the error instructions.
 
 ### 6. Usage:
