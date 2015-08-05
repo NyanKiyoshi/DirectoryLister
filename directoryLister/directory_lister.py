@@ -638,8 +638,7 @@ class ListDirectory(object):
             if r:
                 return r[0]
 
-        b_lines = opened_file.readlines()
-        hashes = dict(md5=self.get_hash(b_lines, md5), sha1=self.get_hash(b_lines, sha1))
+        hashes = dict(md5=self.get_hash(opened_file, md5), sha1=self.get_hash(opened_file, sha1))
         if self.keep_hashes_cache:
             # We insert the hashes or we update them if the path already exists (if the modification time has changed)
             self.cursor.execute(
@@ -648,9 +647,14 @@ class ListDirectory(object):
         return json.dumps(hashes)
 
     @staticmethod
-    def get_hash(file_, algorithm_function):
+    def get_hash(fd, algorithm_function):
         h = algorithm_function()
-        [h.update(l) for l in file_]
+        fd.seek(0)
+        while 1:
+            data = fd.read(2**9)
+            if not data:
+                break
+            h.update(data)
         return h.hexdigest()
 
     def rendering_error(self, **keys):
